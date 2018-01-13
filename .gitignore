@@ -33,3 +33,9 @@ test_data/*
 
 # Doxygen
 Documentation/*
+
+\.buildpath
+
+\.project
+
+\.settings/
