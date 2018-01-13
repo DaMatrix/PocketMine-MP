@@ -48,8 +48,8 @@ class BiomeSelector{
 	public function __construct(Random $random, callable $lookup, Biome $fallback){
 		$this->fallback = $fallback;
 		$this->lookup = $lookup;
-		$this->temperature = new Simplex($random, 2, 1 / 16, 1 / 512);
-		$this->rainfall = new Simplex($random, 2, 1 / 16, 1 / 512);
+		$this->temperature = new Simplex($random, 8, 1 / 16, 1 / 4096);
+		$this->rainfall = new Simplex($random, 8, 1 / 16, 1 / 1024);
 	}
 
 	public function recalculate(){

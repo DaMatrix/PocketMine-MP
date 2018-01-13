@@ -24,8 +24,9 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\normal\biome;
 
 use pocketmine\level\generator\populator\TallGrass;
+use net\daporkchop\world\biome\abs\WaterBiome;
 
-class RiverBiome extends GrassyBiome{
+class RiverBiome extends WaterBiome{
 
 	public function __construct(){
 		parent::__construct();

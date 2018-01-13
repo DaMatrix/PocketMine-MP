@@ -24,19 +24,29 @@ declare(strict_types=1);
 namespace pocketmine\level\generator\normal\biome;
 
 use net\daporkchop\world\biome\abs\WaterBiome;
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
 
-class OceanBiome extends WaterBiome{
+class DeepOceanBiome extends WaterBiome{
 
 	public function __construct(){
 		parent::__construct();
+		
+		$this->setGroundCover([
+		    BlockFactory::get(Block::GRAVEL, 0),
+		    BlockFactory::get(Block::DIRT, 0),
+		    BlockFactory::get(Block::DIRT, 0),
+		    BlockFactory::get(Block::DIRT, 0),
+		    BlockFactory::get(Block::DIRT, 0),
+		]);
 
-		$this->setElevation(46, 58);
+		$this->setElevation(35, 46);
 
 		$this->temperature = 0.5;
 		$this->rainfall = 0.5;
 	}
 
 	public function getName() : string{
-		return "Ocean";
+		return "Deep_Ocean";
 	}
 }

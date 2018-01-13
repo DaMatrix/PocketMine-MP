@@ -37,28 +37,41 @@ use pocketmine\level\generator\normal\biome\SwampBiome;
 use pocketmine\level\generator\normal\biome\TaigaBiome;
 use pocketmine\level\generator\populator\Populator;
 use pocketmine\utils\Random;
+use net\daporkchop\world\biome\MesaNormalBiome;
+use net\daporkchop\world\biome\MesaPlateauBiome;
+use net\daporkchop\world\biome\SavannaBiome;
+use net\daporkchop\world\biome\JungleBiome;
+use pocketmine\level\generator\normal\biome\DeepOceanBiome;
+use net\daporkchop\world\biome\SavannaMBiome;
 
 abstract class Biome{
 
-	public const OCEAN = 0;
-	public const PLAINS = 1;
-	public const DESERT = 2;
-	public const MOUNTAINS = 3;
-	public const FOREST = 4;
-	public const TAIGA = 5;
-	public const SWAMP = 6;
-	public const RIVER = 7;
+	public const OCEAN = 0;//
+	public const PLAINS = 1;//
+	public const DESERT = 2;//
+	public const MOUNTAINS = 3;//
+	public const FOREST = 4;//
+	public const TAIGA = 5;//
+	public const SWAMP = 6;//
+	public const RIVER = 7;//
 
 	public const HELL = 8;
 
-	public const ICE_PLAINS = 12;
+	public const ICE_PLAINS = 12;//
 
 
-	public const SMALL_MOUNTAINS = 20;
+	public const SMALL_MOUNTAINS = 20;//
 
 
-	public const BIRCH_FOREST = 27;
-
+	public const BIRCH_FOREST = 27;//
+	
+	//Pork's biomes
+	public const MESA = 37;//
+	public const MESA_PLATEAU = 36;//
+	public const SAVANNA = 35;//
+	public const JUNGLE = 23;//
+	public const DEEP_OCEAN = 24;//
+	public const SAVANNA_M = 163;
 
 	public const MAX_BIOMES = 256;
 
@@ -105,7 +118,14 @@ abstract class Biome{
 
 
 		self::register(self::SMALL_MOUNTAINS, new SmallMountainsBiome());
-
+		
+		self::register(self::MESA, new MesaNormalBiome());
+		self::register(self::MESA_PLATEAU, new MesaPlateauBiome());
+		self::register(self::SAVANNA, new SavannaBiome());
+		self::register(self::JUNGLE, new JungleBiome());
+		self::register(self::DEEP_OCEAN, new DeepOceanBiome());
+		self::register(self::SAVANNA_M, new SavannaMBiome());
+		
 		self::register(self::BIRCH_FOREST, new ForestBiome(ForestBiome::TYPE_BIRCH));
 	}
 
