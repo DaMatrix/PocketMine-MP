@@ -10,3 +10,6 @@
 [submodule "tests/plugins/PocketMine-TesterPlugin"]
 	path = tests/plugins/PocketMine-TesterPlugin
 	url = https://github.com/pmmp/PocketMine-TesterPlugin.git
+[submodule "plugins/PureEntitiesX-src"]
+	path = plugins/PureEntitiesX-src
+	url = https://github.com/DaMatrix/PureEntitiesX.git

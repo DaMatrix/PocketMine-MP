@@ -11,7 +11,7 @@ class MultiWorld extends PluginBase {
     public function onEnable()  {
         self::$instance = $this;
         
-        //Generator::addGenerator(WorldGenerator::class, "porkworld");
+        Generator::addGenerator(PorkWorld::class, "porkworld");
 
         echo("done xd");
     }
