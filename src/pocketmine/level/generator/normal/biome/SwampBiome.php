@@ -28,7 +28,7 @@ class SwampBiome extends GrassyBiome{
 	public function __construct(){
 		parent::__construct();
 
-		$this->setElevation(62, 63);
+		$this->setElevation(60, 66);
 
 		$this->temperature = 0.8;
 		$this->rainfall = 0.9;
