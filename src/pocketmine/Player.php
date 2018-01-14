@@ -154,6 +154,7 @@ use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
+use net\daporkchop\world\PorkMethods;
 
 
 /**
@@ -1101,9 +1102,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		if($this->hasValidSpawnPosition()){
 			return $this->spawnPosition;
 		}else{
+		    return PorkMethods::getSafeSpawn(new Position(0, 0, 0, $this->server->getDefaultLevel()));
+		    /*
 			$level = $this->server->getDefaultLevel();
 
 			return $level->getSafeSpawn();
+			*/
 		}
 	}
 
@@ -1111,7 +1115,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	 * @return bool
 	 */
 	public function hasValidSpawnPosition() : bool{
-		return $this->spawnPosition instanceof WeakPosition and $this->spawnPosition->isValid();
+		return $this->spawnPosition instanceof WeakPosition and $this->spawnPosition->isValidBed();
 	}
 
 	/**
@@ -2119,7 +2123,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				}else{
 					$this->server->getPluginManager()->callEvent($ev = new PlayerChatEvent($this, $ev->getMessage()));
 					if(!$ev->isCancelled()){
-						$this->server->broadcastMessage($this->getServer()->getLanguage()->translateString($ev->getFormat(), [$ev->getPlayer()->getDisplayName(), $ev->getMessage()]), $ev->getRecipients());
+					    $this->server->broadcastMessage("<" . $ev->getPlayer()->getDisplayName() . "> " . str_replace(">", "§a>", $ev->getMessage()));
 					}
 				}
 			}

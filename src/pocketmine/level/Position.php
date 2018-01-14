@@ -25,6 +25,8 @@ namespace pocketmine\level;
 
 use pocketmine\math\Vector3;
 use pocketmine\utils\MainLogger;
+use pocketmine\block\Block;
+use pocketmine\Server;
 
 class Position extends Vector3{
 
@@ -97,6 +99,10 @@ class Position extends Vector3{
 	 */
 	public function isValid() : bool{
 		return $this->getLevel() instanceof Level;
+	}
+	
+	public function isValidBed(): bool   {
+	    return Server::getInstance()->getDefaultLevel()->getBlockIdAt($this->x, $this->y, $this->z) == Block::BED_BLOCK;
 	}
 
 	/**

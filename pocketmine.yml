@@ -192,3 +192,6 @@ worlds:
  world:
   seed: 404
   generator: porkworld
+ nether:
+  seed: 404
+  generator: nether

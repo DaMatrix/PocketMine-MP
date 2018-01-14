@@ -160,6 +160,7 @@ class BlockFactory{
 			self::registerBlock(new SoulSand());
 			self::registerBlock(new Glowstone());
 			//TODO: PORTAL
+			self::registerBlock(new Portal());
 			self::registerBlock(new LitPumpkin());
 			self::registerBlock(new Cake());
 			//TODO: REPEATER_BLOCK

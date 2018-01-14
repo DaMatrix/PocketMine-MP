@@ -13,6 +13,7 @@ use pocketmine\level\generator\populator\GroundCover;
 use pocketmine\level\generator\populator\Ore;
 use net\daporkchop\world\noise\NoiseGeneratorOctaves3D;
 use net\daporkchop\world\PorkBiomeSelector;
+use pocketmine\block\Stone;
 
 /**
  * this class is painstakingly ported over to PHP from https://github.com/Barteks2x/173generator/blob/master/src/main/java/com/github/barteks2x/b173gen/generator/ChunkProviderGenerate.java
@@ -83,12 +84,15 @@ class PorkWorld extends Generator
         $ores->setOreTypes([
             new OreType(BlockFactory::get(Block::COAL_ORE), 20, 16, 0, 128),
             new OreType(BlockFactory::get(Block::IRON_ORE), 20, 8, 0, 64),
-            new OreType(BlockFactory::get(Block::REDSTONE_ORE), 8, 7, 0, 16),
-            new OreType(BlockFactory::get(Block::LAPIS_ORE), 1, 6, 0, 32),
-            new OreType(BlockFactory::get(Block::GOLD_ORE), 2, 8, 0, 32),
-            new OreType(BlockFactory::get(Block::DIAMOND_ORE), 1, 7, 0, 16),
+            new OreType(BlockFactory::get(Block::REDSTONE_ORE), 1, 7, 0, 16),
+            new OreType(BlockFactory::get(Block::LAPIS_ORE), 2, 6, 0, 32),
+            new OreType(BlockFactory::get(Block::GOLD_ORE), 4, 8, 0, 32),
+            new OreType(BlockFactory::get(Block::DIAMOND_ORE), 2, 7, 0, 16),
             new OreType(BlockFactory::get(Block::DIRT), 20, 32, 0, 128),
-            new OreType(BlockFactory::get(Block::GRAVEL), 10, 16, 0, 128)
+            new OreType(BlockFactory::get(Block::GRAVEL), 10, 16, 0, 128),
+            new OreType(BlockFactory::get(Block::STONE, Stone::DIORITE), 6, 32, 0, 128),
+            new OreType(BlockFactory::get(Block::STONE, Stone::ANDESITE), 6, 32, 0, 128),
+            new OreType(BlockFactory::get(Block::STONE, Stone::GRANITE), 6, 32, 0, 128),
         ]);
         $this->populators[] = $ores;
         

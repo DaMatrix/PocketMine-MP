@@ -189,7 +189,7 @@ class Explosion{
 			$yieldDrops = false;
 
 			if($block instanceof TNT){
-				$block->ignite(mt_rand(10, 30));
+				$block->ignite(mt_rand(1, 5));
 			}elseif($yieldDrops = (mt_rand(0, 100) < $yield)){
 				foreach($block->getDrops($air) as $drop){
 					$this->level->dropItem($block->add(0.5, 0.5, 0.5), $drop);
