@@ -6,11 +6,11 @@ class NoiseGeneratorOctaves3D {
     private $generatorCollection = [];
     private $octaves;
     
-    public function __construct($i) {
+    public function __construct($i, $random) {
         $this->octaves = $i;
         $this->generatorCollection = array($i);
         for($j = 0; $j < $i; $j++) {
-            $this->generatorCollection[$j] = new NoiseGenerator3dPerlin();
+            $this->generatorCollection[$j] = new NoiseGenerator3dPerlin($random);
         }
     }
     

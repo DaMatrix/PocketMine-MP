@@ -29,6 +29,10 @@ class PorkWorld extends Generator
 
     private $generationPopulators = [];
 
+    /**
+     * 
+     * @var Random
+     */
     private $random;
 
     private $noise1;
@@ -39,7 +43,13 @@ class PorkWorld extends Generator
 
     private $noise;
 
-    private $noise6 = [];
+    private $sandNoise;
+
+    private $gravelNoise;
+
+    private $stoneNoise;
+
+    private $noise6;
 
     private $noise7;
 
@@ -83,16 +93,14 @@ class PorkWorld extends Generator
         $this->populators[] = $ores;
         
         $this->random->setSeed($level->getSeed());
-        if ($this->gen1 == null) {
-            $this->gen1 = new NoiseGeneratorOctaves3D(16);
-            $this->gen2 = new NoiseGeneratorOctaves3D(16);
-            $this->gen3 = new NoiseGeneratorOctaves3D(8);
-            $this->gen4 = new NoiseGeneratorOctaves3D(4);
-            $this->gen5 = new NoiseGeneratorOctaves3D(4);
-            $this->gen6 = new NoiseGeneratorOctaves3D(10);
-            $this->gen7 = new NoiseGeneratorOctaves3D(16);
-            $this->genTrees = new NoiseGeneratorOctaves3D(8);
-        }
+        $this->gen1 = new NoiseGeneratorOctaves3D(16, $this->random);
+        $this->gen2 = new NoiseGeneratorOctaves3D(16, $this->random);
+        $this->gen3 = new NoiseGeneratorOctaves3D(8, $this->random);
+        $this->gen4 = new NoiseGeneratorOctaves3D(4, $this->random);
+        $this->gen5 = new NoiseGeneratorOctaves3D(4, $this->random);
+        $this->gen6 = new NoiseGeneratorOctaves3D(10, $this->random);
+        $this->gen7 = new NoiseGeneratorOctaves3D(16, $this->random);
+        $this->genTrees = new NoiseGeneratorOctaves3D(8, $this->random);
     }
 
     public function getName(): string
@@ -127,12 +135,23 @@ class PorkWorld extends Generator
         $chunk = $this->level->getChunk($x, $z);
         $this->random->setSeed(0xdeadbeef ^ ($x << 8) ^ $z ^ $this->level->getSeed());
         
-        for ($xx = 0; $xx < 16; ++ $xx) {
-            for ($zz = 0; $zz < 16; ++ $zz) {
-                $chunk->setBiomeId($xx, $zz, $this->pickBiome($x * 16 + $xx, $z * 16 + $zz)
-                    ->getId());
-            }
-        }
+        /*
+         * $temp = array(
+         * 256
+         * );
+         * $rain = array(
+         * 256
+         * );
+         *
+         * for ($xx = 0; $xx < 16; ++ $xx) {
+         * for ($zz = 0; $zz < 16; ++ $zz) {
+         * $out = $this->pickBiome($x * 16 + $xx, $z * 16 + $zz);
+         * $chunk->setBiomeId($xx, $zz, $out->biome->getId());
+         * $temp[$xx * 16 + $zz] = $out->temp;
+         * $rain[$xx * 16 + $zz] = $out->rain;
+         * }
+         * }
+         */
         
         $byte0 = 4;
         $oceanHeight = 64;
@@ -167,11 +186,10 @@ class PorkWorld extends Generator
                             $d15 = $d10;
                             $d16 = ($d11 - $d10) * $d14;
                             for ($k2 = 0; $k2 < 4; $k2 ++) {
-                                $d17 = $yPiece / 16;
-                                // $d17 = temperatures[(xPiece * 4 + i2) * 16 + (zPiece * 4 + k2)];
+                                $d17 = 1 - ($yPiece / 16);
                                 $block = Block::AIR;
-                                if ($yPiece * 8 + $l1 < 63) {
-                                    if ($d17 < 0.5 && $yPiece * 8 + $l1 >= 63 - 1) {
+                                if ($yLoc < 64) {
+                                    if ($d17 < 0.5 && $yLoc >= 64 - 1) {
                                         $block = Block::ICE;
                                     } else {
                                         $block = Block::WATER;
@@ -198,6 +216,13 @@ class PorkWorld extends Generator
             }
         }
         
+        for ($xx = 0; $xx < 16; $xx ++) {
+            for ($zz = 0; $zz < 16; $zz ++) {
+                $highest = $chunk->getHighestBlockAt($xx, $zz);
+                $chunk->setBiomeId($xx, $zz, $this->pickBiome($x * 16 + $xx, $z * 16 + $zz, $chunk->getBlockId($xx, $highest, $zz) == Block::WATER ? 1 : $highest)->biome->getId());
+            }
+        }
+        
         foreach ($this->generationPopulators as $populator) {
             $populator->populate($this->level, $x, $z, $this->random);
         }
@@ -210,19 +235,6 @@ class PorkWorld extends Generator
         );
         $d0 = 684.412;
         $d1 = 684.412;
-        
-        $temp = array(
-            256
-        );
-        $rain = array(
-            256
-        );
-        for ($x = 0; $x > 16; $x ++) {
-            for ($z = 0; $z > 16; $z ++) {
-                $temp[$x * 16 + $z] = 0; // $this->selector->getTemperature($xPos, $z)
-                $rain[$x * 16 + $z] = 0;
-            }
-        }
         
         $this->noise6 = $this->gen6->generateNoiseArray2($posX, $posZ, $xSize, $zSize, 1.121, 1.121, 0.5);
         $this->noise7 = $this->gen7->generateNoiseArray2($posX, $posZ, $xSize, $zSize, 200, 200, 0.5);
@@ -238,9 +250,9 @@ class PorkWorld extends Generator
             $k2 = $x * $i2 + $i2 / 2;
             for ($z = 0; $z < $zSize; $z ++) {
                 $i3 = $z * $i2 + $i2 / 2;
-                $d2 = 0.5;
+                $d2 = 1;
+                $d3 = 1;
                 // $d2 = $temp[$k2 * 16 + $i3];
-                $d3 = 0.5;
                 // $d3 = $rain[$k2 * 16 + $i3] * $d2;
                 $d4 = 1.0 - $d3;
                 $d4 *= $d4;
@@ -305,7 +317,7 @@ class PorkWorld extends Generator
         }
     }
 
-    public function pickBiome(int $x, int $z)
+    public function pickBiome(int $x, int $z, $height)
     {
         // return Biome::getBiome(Biome::MOUNTAINS);
         $hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
@@ -319,6 +331,6 @@ class PorkWorld extends Generator
             $zNoise = 1;
         }
         
-        return $this->selector->pickBiome($x + $xNoise - 1, $z + $zNoise - 1);
+        return $this->selector->pickBiomeNew($x + $xNoise - 1, $z + $zNoise - 1, $height);
     }
 }

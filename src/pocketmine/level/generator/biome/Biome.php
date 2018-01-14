@@ -43,6 +43,7 @@ use net\daporkchop\world\biome\SavannaBiome;
 use net\daporkchop\world\biome\JungleBiome;
 use pocketmine\level\generator\normal\biome\DeepOceanBiome;
 use net\daporkchop\world\biome\SavannaMBiome;
+use pocketmine\level\generator\normal\biome\BeachBiome;
 
 abstract class Biome{
 
@@ -71,7 +72,8 @@ abstract class Biome{
 	public const SAVANNA = 35;//
 	public const JUNGLE = 23;//
 	public const DEEP_OCEAN = 24;//
-	public const SAVANNA_M = 163;
+	public const SAVANNA_M = 163;//
+	public const BEACH = 16;//
 
 	public const MAX_BIOMES = 256;
 
@@ -125,6 +127,7 @@ abstract class Biome{
 		self::register(self::JUNGLE, new JungleBiome());
 		self::register(self::DEEP_OCEAN, new DeepOceanBiome());
 		self::register(self::SAVANNA_M, new SavannaMBiome());
+		self::register(self::BEACH, new BeachBiome());
 		
 		self::register(self::BIRCH_FOREST, new ForestBiome(ForestBiome::TYPE_BIRCH));
 	}

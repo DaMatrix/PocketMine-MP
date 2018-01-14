@@ -12,20 +12,20 @@ class NoiseGenerator3dPerlin
 
     private $permutations = [];
 
-    public function __construct()
+    public function __construct($random)
     {
         $this->permutations = array(
             512
         );
-        $this->randomDX = 67.4;
-        $this->randomDY = 248.1;
-        $this->randomDZ = 127.8;
+        $this->randomDX = $random->nextFloat() * 255;
+        $this->randomDY = $random->nextFloat() * 255;
+        $this->randomDZ = $random->nextFloat() * 255;
         for ($i = 0; $i < 256; $i ++) {
             $this->permutations[$i] = $i;
         }
         // array of random values
         for ($j = 0; $j < 256; $j ++) {
-            $k = mt_rand(0, 255 - $j) + $j;
+            $k = $random->nextRange(0, 255 - $j) + $j;
             $l = $this->permutations[$j];
             $this->permutations[$j] = $this->permutations[$k];
             $this->permutations[$k] = $l;
