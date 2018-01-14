@@ -83,14 +83,16 @@ class PorkWorld extends Generator
         $this->populators[] = $ores;
         
         $this->random->setSeed($level->getSeed());
-        $this->gen1 = new NoiseGeneratorOctaves3D(16);
-        $this->gen2 = new NoiseGeneratorOctaves3D(16);
-        $this->gen3 = new NoiseGeneratorOctaves3D(8);
-        $this->gen4 = new NoiseGeneratorOctaves3D(4);
-        $this->gen5 = new NoiseGeneratorOctaves3D(4);
-        $this->gen6 = new NoiseGeneratorOctaves3D(10);
-        $this->gen7 = new NoiseGeneratorOctaves3D(16);
-        $this->genTrees = new NoiseGeneratorOctaves3D(8);
+        if ($this->gen1 == null) {
+            $this->gen1 = new NoiseGeneratorOctaves3D(16);
+            $this->gen2 = new NoiseGeneratorOctaves3D(16);
+            $this->gen3 = new NoiseGeneratorOctaves3D(8);
+            $this->gen4 = new NoiseGeneratorOctaves3D(4);
+            $this->gen5 = new NoiseGeneratorOctaves3D(4);
+            $this->gen6 = new NoiseGeneratorOctaves3D(10);
+            $this->gen7 = new NoiseGeneratorOctaves3D(16);
+            $this->genTrees = new NoiseGeneratorOctaves3D(8);
+        }
     }
 
     public function getName(): string
@@ -165,7 +167,7 @@ class PorkWorld extends Generator
                             $d15 = $d10;
                             $d16 = ($d11 - $d10) * $d14;
                             for ($k2 = 0; $k2 < 4; $k2 ++) {
-                                $d17 = 0;
+                                $d17 = $yPiece / 16;
                                 // $d17 = temperatures[(xPiece * 4 + i2) * 16 + (zPiece * 4 + k2)];
                                 $block = Block::AIR;
                                 if ($yPiece * 8 + $l1 < 63) {
@@ -305,8 +307,8 @@ class PorkWorld extends Generator
 
     public function pickBiome(int $x, int $z)
     {
-        return Biome::getBiome(Biome::MOUNTAINS);
-        /*$hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
+        // return Biome::getBiome(Biome::MOUNTAINS);
+        $hash = $x * 2345803 ^ $z * 9236449 ^ $this->level->getSeed();
         $hash *= $hash + 223;
         $xNoise = $hash >> 20 & 3;
         $zNoise = $hash >> 22 & 3;
@@ -317,6 +319,6 @@ class PorkWorld extends Generator
             $zNoise = 1;
         }
         
-        return $this->selector->pickBiome($x + $xNoise - 1, $z + $zNoise - 1);*/
+        return $this->selector->pickBiome($x + $xNoise - 1, $z + $zNoise - 1);
     }
 }

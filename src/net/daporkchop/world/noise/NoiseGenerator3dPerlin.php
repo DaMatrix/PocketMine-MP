@@ -17,9 +17,9 @@ class NoiseGenerator3dPerlin
         $this->permutations = array(
             512
         );
-        $this->randomDX = mt_rand(1, 256000) / 1000;
-        $this->randomDY = mt_rand(1, 256000) / 1000;
-        $this->randomDZ = mt_rand(1, 256000) / 1000;
+        $this->randomDX = 67.4;
+        $this->randomDY = 248.1;
+        $this->randomDZ = 127.8;
         for ($i = 0; $i < 256; $i ++) {
             $this->permutations[$i] = $i;
         }
@@ -94,11 +94,8 @@ class NoiseGenerator3dPerlin
         return generateNoise($d, $d1, 0.0);
     }
 
-    public function generateNoiseArray($xPos, $yPos, $zPos, $xSize, $ySize, $zSize, float $gridX, float $gridY, float $gridZ, float $a): array
+    public function generateNoiseArray($array, $xPos, $yPos, $zPos, $xSize, $ySize, $zSize, float $gridX, float $gridY, float $gridZ, float $a): array
     {
-        $array = array(
-            ($xSize + 0) * ($ySize + 0) * ($zSize + 0)
-        );
         if ($ySize == 1) {
             $index = 0;
             $amplitude = 1.0 / $a;
@@ -129,7 +126,7 @@ class NoiseGenerator3dPerlin
                     $d9 = $this->lerp($d17, $this->grad2d($this->permutations[$j1], $x, $z), $this->grad3d($this->permutations[$l1], $x - 1.0, 0.0, $z));
                     $d11 = $this->lerp($d17, $this->grad3d($this->permutations[$j1 + 1], $x, 0.0, $z - 1.0), $this->grad3d($this->permutations[$l1 + 1], $x - 1.0, 0.0, $z - 1.0));
                     $value = $this->lerp($d21, $d9, $d11);
-                    $array[$index ++] = $value * $amplitude;
+                    $array[$index ++] += $value * $amplitude;
                 }
             }
             
@@ -187,7 +184,7 @@ class NoiseGenerator3dPerlin
                     $d28 = $this->lerp($d27, $d13, $d15);
                     $d29 = $this->lerp($d27, $d16, $d18);
                     $value = $this->lerp($d25, $d28, $d29);
-                    $array[$i1 ++] = $value * $amplitude;
+                    $array[$i1 ++] += $value * $amplitude;
                 }
             }
         }
